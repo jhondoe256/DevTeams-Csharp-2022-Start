@@ -2,11 +2,18 @@ using static System.Console;
 
 public class DeveloperUI
 {
+    private DeveloperRepository _devRepo;
     private bool isRunningDevUI;
     private DeveloperTeamUI _dtUI;
 
+    public DeveloperUI()
+    {
+        _devRepo = new DeveloperRepository();
+    }
+
     public void Run()
     {
+        SeedData();
         RunApplication();
     }
 
@@ -15,6 +22,7 @@ public class DeveloperUI
         isRunningDevUI = true;
         while (isRunningDevUI)
         {
+            Clear();
             WriteLine("== Komodo DevTeams Developer UI ==\n" +
                   "Please Make a Selection:\n" +
                   "1. Add A Developer\n" +
@@ -79,31 +87,264 @@ public class DeveloperUI
 
     private void ViewDevsWithPluralsight()
     {
-        throw new NotImplementedException();
+        Clear();
+        WriteLine("== Devs Without Pluralsight ==\n");
+        ShowDevsWithOutPs();
+        ReadKey();
+    }
+
+    private void ShowDevsWithOutPs()
+    {
+        List<Developer> devsWoPS = _devRepo.DevsWithOutPluralsight();
+        if (devsWoPS.Count > 0)
+        {
+            foreach (var Developer in devsWoPS)
+            {
+                DisplayDevData(Developer);
+            }
+        }
+        else
+        {
+            WriteLine("There Are No Developers at this time with out a Pluralsight Membership.");
+        }
     }
 
     private void DeleteAnExistingDeveloper()
     {
-        throw new NotImplementedException();
+        Clear();
+        ShowEnlistedDevs();
+        WriteLine("----------\n");
+        try
+        {
+            WriteLine("Select developer by Id.");
+            int userInputDevId = int.Parse(ReadLine());
+            ValidateDeveloperInDatabase(userInputDevId);
+            WriteLine("Do you want to Delete this Developer? y/n?");
+            string userInputDeleteDev = ReadLine();
+            if (userInputDeleteDev == "Y".ToLower())
+            {
+                if (_devRepo.DeleteDeveloperData(userInputDevId))
+                {
+                    WriteLine($" The Developer with the Id: {userInputDevId}, was Successfully Deleted.");
+                }
+                else
+                {
+                    WriteLine($"The Developer with the Id: {userInputDevId}, was NOT Deleted.");
+                }
+            }
+        }
+        catch
+        {
+            SomethingWentWrong();
+        }
+
+        ReadKey();
     }
 
     private void UpdateAnExistingDeveloper()
     {
-        throw new NotImplementedException();
+        Clear();
+        ShowEnlistedDevs();
+        WriteLine("----------\n");
+        try
+        {
+            WriteLine("Select developer by Id.");
+            int userInputDevId = int.Parse(ReadLine());
+            Developer devInDb = GetDeveloperDataFromDb(userInputDevId);
+            bool isValidated = ValidateDeveloperInDatabase(devInDb.Id);
+
+            if (isValidated)
+            {
+                WriteLine("Do you want to Update this Developer? y/n?");
+                string userInputDeleteDev = ReadLine();
+                if (userInputDeleteDev == "Y".ToLower())
+                {
+                    Developer updatedDevData = InitialDevCreationSetup();
+
+                    if (_devRepo.UpdateDeveloperData(devInDb.Id, updatedDevData))
+                    {
+                        WriteLine($" The Developer {updatedDevData.FullName}, was Successfully Updated.");
+                    }
+                    else
+                    {
+                        WriteLine($"The Developer {updatedDevData.FullName}, was NOT Updated.");
+                    }
+                }
+                else
+                {
+                    WriteLine("Returning to Developer Menu.");
+                }
+            }
+        }
+        catch
+        {
+            SomethingWentWrong();
+        }
+        ReadKey();
     }
 
     private void ViewDeveloperByID()
     {
-        throw new NotImplementedException();
+        Clear();
+        ShowEnlistedDevs();
+        WriteLine("----------\n");
+        try
+        {
+            WriteLine("Select developer by Id.");
+            int userInputDevId = int.Parse(ReadLine());
+            ValidateDeveloperInDatabase(userInputDevId);
+        }
+        catch
+        {
+            SomethingWentWrong();
+        }
+        ReadKey();
+    }
+
+    private void SomethingWentWrong()
+    {
+        WriteLine("Something went wrong.\n" +
+                       "Please try again\n" +
+                       "Returning to Developer Menu.");
+    }
+
+    private bool ValidateDeveloperInDatabase(int userInputDevId)
+    {
+        Developer dev = GetDeveloperDataFromDb(userInputDevId);
+        if (dev != null)
+        {
+            Clear();
+            DisplayDevData(dev);
+            return true;
+        }
+        else
+        {
+            WriteLine($"The Developer with the Id: {userInputDevId} doesn't Exist!");
+            return false;
+        }
+    }
+
+    private Developer GetDeveloperDataFromDb(int userInputDevId)
+    {
+        return _devRepo.GetDeveloper(userInputDevId);
+    }
+
+    private void ShowEnlistedDevs()
+    {
+        Clear();
+        WriteLine("== Developer Listing ==");
+        List<Developer> devsInDb = _devRepo.GetDevelopers();
+        ValidateDeveloperDatabaseData(devsInDb);
     }
 
     private void ViewAllDevelopers()
     {
-        throw new NotImplementedException();
+        Clear();
+        ShowEnlistedDevs();
+        ReadKey();
+    }
+
+    private void ValidateDeveloperDatabaseData(List<Developer> devsInDb)
+    {
+        if (devsInDb.Count > 0)
+        {
+            Clear();
+            foreach (var dev in devsInDb)
+            {
+                DisplayDevData(dev);
+            }
+        }
+        else
+        {
+            WriteLine("There are no Developers in the Database.");
+        }
+    }
+
+    private void DisplayDevData(Developer dev)
+    {
+        WriteLine(dev);
     }
 
     private void AddADeveloper()
     {
-        throw new NotImplementedException();
+        Clear();
+        try
+        {
+            Developer dev = InitialDevCreationSetup();
+            if (_devRepo.AddDevToDb(dev))
+            {
+                WriteLine($"Successfully Added {dev.FullName} to the Database!");
+            }
+            else
+            {
+                SomethingWentWrong();
+            }
+        }
+        catch
+        {
+
+            SomethingWentWrong();
+        }
+        ReadKey();
+    }
+
+    private Developer InitialDevCreationSetup()
+    {
+        Developer dev = new Developer();
+
+        WriteLine("== Add Develper Menu ==");
+
+        WriteLine("What is the Developers first name?");
+        dev.FirstName = ReadLine();
+
+        WriteLine("What is the Developers Last name?");
+        dev.LastName = ReadLine();
+
+        WriteLine("Does this Developer have a Pluralsight Account?\n" +
+                 "1. yes\n" +
+                 "2. no\n");
+
+        bool hasMadeSelection = false;
+
+        string userInputPsAcct = ReadLine();
+
+        while (!hasMadeSelection)
+        {
+            switch (userInputPsAcct)
+            {
+                case "1":
+                    dev.HasPluralsight = true;
+                    hasMadeSelection = true;
+                    break;
+
+                case "2":
+                    dev.HasPluralsight = false;
+                    hasMadeSelection = true;
+                    break;
+
+                default:
+                    WriteLine("Invalid Selection");
+                    DTUtils.PressAnyKey();
+                    break;
+            }
+        }
+
+        return dev;
+    }
+
+    private void SeedData()
+    {
+        var devA = new Developer("Akuma", "n/a", false);
+        var devB = new Developer("Ryu", "n/a", true);
+        var devC = new Developer("M.", "Bison", true);
+        var devD = new Developer("Chun", "Li", false);
+        var devE = new Developer("Cammy", "n/a", false);
+
+        //add to db
+        _devRepo.AddDevToDb(devA);
+        _devRepo.AddDevToDb(devB);
+        _devRepo.AddDevToDb(devC);
+        _devRepo.AddDevToDb(devD);
+        _devRepo.AddDevToDb(devE);
     }
 }

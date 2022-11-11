@@ -79,31 +79,43 @@ public class DeveloperTeamUI
 
     private void AddMultiDevsToATeam()
     {
-        throw new NotImplementedException();
+        Clear();
+
+        ReadKey();
     }
 
     private void DeleteAnExistingDeveloperTeam()
     {
-        throw new NotImplementedException();
+        Clear();
+
+        ReadKey();
     }
 
     private void UpdateAnExistingDeveloperTeam()
     {
-        throw new NotImplementedException();
+        Clear();
+
+        ReadKey();
     }
 
     private void ViewDeveloperTeamByID()
     {
-        throw new NotImplementedException();
+        Clear();
+
+        ReadKey();
     }
 
     private void ViewAllDeveloperTeams()
     {
-        throw new NotImplementedException();
+        Clear();
+
+        ReadKey();
     }
 
     private void AddADeveloperTeam()
     {
-        throw new NotImplementedException();
+        Clear();
+
+        ReadKey();
     }
 }

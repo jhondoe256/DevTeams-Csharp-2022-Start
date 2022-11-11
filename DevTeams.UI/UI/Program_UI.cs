@@ -2,6 +2,7 @@ using static System.Console;
 
 public class Program_UI
 {
+
     private DeveloperUI _devUI;
     private DeveloperTeamUI _devTeamUI;
 
@@ -11,7 +12,6 @@ public class Program_UI
         _devTeamUI = new DeveloperTeamUI();
     }
 
-
     public void Run()
     {
         RunApplication();
@@ -19,7 +19,7 @@ public class Program_UI
 
     private void RunApplication()
     {
-        
+
         while (DTUtils.isRunning)
         {
             WriteLine("== Welcome to Komodo DevTeams ==\n" +
