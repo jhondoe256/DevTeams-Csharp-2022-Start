@@ -4,6 +4,11 @@ public class DeveloperRepository
     private readonly List<Developer> _devDb = new List<Developer>();
     private int _count;
 
+    public DeveloperRepository()
+    {
+        SeedData();
+    }
+
     public bool AddDevToDb(Developer dev)
     {
         return (dev is null) ? false : AddToDatabase(dev);
@@ -82,4 +87,27 @@ public class DeveloperRepository
         return devsWithoutPs;
     }
 
+    private void SeedData()
+    {
+        var devA = new Developer("Akuma", "n/a", false);
+        var devB = new Developer("Ryu", "n/a", true);
+        var devC = new Developer("M.", "Bison", true);
+        var devD = new Developer("Chun", "Li", false);
+        var devE = new Developer("Cammy", "n/a", false);
+        var devF = new Developer("Blanka", "n/a", false);
+        var devG = new Developer("Guile", "n/a", false);
+        var devH = new Developer("Daslim", "n/a", false);
+        var devI = new Developer("Vega", "n/a", true);
+
+        //add to db
+        AddDevToDb(devA);
+        AddDevToDb(devB);
+        AddDevToDb(devC);
+        AddDevToDb(devD);
+        AddDevToDb(devE);
+        AddDevToDb(devF);
+        AddDevToDb(devG);
+        AddDevToDb(devH);
+        AddDevToDb(devI);
+    }
 }

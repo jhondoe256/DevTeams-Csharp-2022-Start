@@ -2,7 +2,6 @@ using static System.Console;
 
 public class Program_UI
 {
-
     private DeveloperUI _devUI;
     private DeveloperTeamUI _devTeamUI;
 
