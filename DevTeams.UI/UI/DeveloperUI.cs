@@ -13,7 +13,6 @@ public class DeveloperUI
 
     public void Run()
     {
-        SeedData();
         RunApplication();
     }
 
@@ -300,18 +299,14 @@ public class DeveloperUI
         WriteLine("What is the Developers Last name?");
         dev.LastName = ReadLine();
 
-       
-
         bool hasMadeSelection = false;
-
-        
 
         while (!hasMadeSelection)
         {
-             WriteLine("Does this Developer have a Pluralsight Account?\n" +
-                 "1. yes\n" +
-                 "2. no\n");
-                 
+            WriteLine("Does this Developer have a Pluralsight Account?\n" +
+                "1. yes\n" +
+                "2. no\n");
+
             string userInputPsAcct = ReadLine();
 
             switch (userInputPsAcct)
@@ -336,19 +331,5 @@ public class DeveloperUI
         return dev;
     }
 
-    private void SeedData()
-    {
-        var devA = new Developer("Akuma", "n/a", false);
-        var devB = new Developer("Ryu", "n/a", true);
-        var devC = new Developer("M.", "Bison", true);
-        var devD = new Developer("Chun", "Li", false);
-        var devE = new Developer("Cammy", "n/a", false);
 
-        //add to db
-        _devRepo.AddDevToDb(devA);
-        _devRepo.AddDevToDb(devB);
-        _devRepo.AddDevToDb(devC);
-        _devRepo.AddDevToDb(devD);
-        _devRepo.AddDevToDb(devE);
-    }
 }
