@@ -300,16 +300,20 @@ public class DeveloperUI
         WriteLine("What is the Developers Last name?");
         dev.LastName = ReadLine();
 
-        WriteLine("Does this Developer have a Pluralsight Account?\n" +
-                 "1. yes\n" +
-                 "2. no\n");
+       
 
         bool hasMadeSelection = false;
 
-        string userInputPsAcct = ReadLine();
+        
 
         while (!hasMadeSelection)
         {
+             WriteLine("Does this Developer have a Pluralsight Account?\n" +
+                 "1. yes\n" +
+                 "2. no\n");
+                 
+            string userInputPsAcct = ReadLine();
+
             switch (userInputPsAcct)
             {
                 case "1":

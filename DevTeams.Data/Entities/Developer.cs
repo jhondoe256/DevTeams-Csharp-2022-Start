@@ -26,7 +26,8 @@ public class Developer
 
     public override string ToString()
     {
-        string str = $"ID: {Id}\n" +
+        //Google:  C# stringbuilder....
+        string str = $"ID: {Id.ToString()}\n" +
                      $"Name: {FullName}\n" +
                      $"Has Pluralsight: {HasPluralsight}\n" +
                      "====================================\n";

@@ -6,6 +6,7 @@ public class DeveloperTeam
     }
     public DeveloperTeam(string teamName, List<Developer> developers)
     {
+        TeamName = teamName;
         Developers = developers;
     }
     public int Id { get; set; }
